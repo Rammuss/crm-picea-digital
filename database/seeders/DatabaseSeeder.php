@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,11 +16,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        User::updateOrCreate(
+            ['email' => env('ADMIN_SEED_EMAIL', 'admin@local.test')],
+            [
+                'name' => env('ADMIN_SEED_NAME', 'admin'),
+                'password' => Hash::make(env('ADMIN_SEED_PASSWORD', 'ChangeMe_12345!')),
+                'role' => 'admin',
+                'is_active' => true,
+                'google_auth_enabled' => false,
+            ]
+        );
     }
 }
